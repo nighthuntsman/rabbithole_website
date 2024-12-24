@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rabbithole</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: #00FF00;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            width: 80%;
+        }
+        input[type="text"], input[type="password"], button {
+            padding: 10px;
+            width: 80%;
+            margin-top: 10px;
+            border: 1px solid #00FF00;
+            background-color: black;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        input[type="text"]::placeholder, input[type="password"]::placeholder {
+            color: #00FF00;
+        }
+        button {
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="auth-container" class="container">
+        <h1 id="auth-title"></h1>
+        <p id="auth-subtitle"></p>
+        <div id="auth-inputs" class="hidden">
+            <input type="text" id="authorization" placeholder="Enter authorization" oninput="this.value = this.value.toUpperCase()">
+            <button onclick="checkAuthorization()">Submit</button>
+        </div>
+    </div>
+
+    <div id="security-container" class="container hidden">
+        <h1 id="security-title"></h1>
+        <div id="security-inputs" class="hidden">
+            <input type="password" id="security-code" placeholder="Enter security code" oninput="this.value = this.value.toUpperCase()">
+            <button onclick="checkSecurityCode()">Submit</button>
+        </div>
+    </div>
+
+    <div id="final-container" class="container hidden">
+        <h1 id="final-title"></h1>
+        <p id="final-message"></p>
+    </div>
+
+    <script>
+        function typeText(elementId, text, callback) {
+            let i = 0;
+            const interval = setInterval(() => {
+                document.getElementById(elementId).textContent += text.charAt(i);
+                i++;
+                if (i >= text.length) {
+                    clearInterval(interval);
+                    if (callback) callback();
+                }
+            }, 100);
+        }
+
+        function checkAuthorization() {
+            const authInput = document.getElementById('authorization').value;
+            if (authInput === 'MARCH HARE') {
+                document.getElementById('auth-container').classList.add('hidden');
+                document.getElementById('security-container').classList.remove('hidden');
+                typeText('security-title', 'Enter your security code', () => {
+                    document.getElementById('security-inputs').classList.remove('hidden');
+                });
+            } else {
+                alert('Invalid authorization');
+            }
+        }
+
+        function checkSecurityCode() {
+            const securityCode = document.getElementById('security-code').value;
+            if (securityCode === 'JABBERWOCKY') {
+                document.getElementById('security-container').classList.add('hidden');
+                document.getElementById('final-container').classList.remove('hidden');
+                typeText('final-title', 'Welcome to the Rabbithole, User Authorization March Hare.', () => {
+                    typeText('final-message', 'Congratulations on your activation. Your information has been recorded. Await further instruction.');
+                });
+            } else {
+                alert('Invalid security code');
+            }
+        }
+
+        // Initial typing effects
+        typeText('auth-title', 'Welcome to the Rabbit-hole', () => {
+            typeText('auth-subtitle', 'Enter authorization.', () => {
+                document.getElementById('auth-inputs').classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
